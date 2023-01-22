@@ -9,7 +9,19 @@ export class App {
     private loader: Loader = new Loader(this.baseUrl);
 
     public start() {
-        const list = new CarsList();
-        list.drawList(this.loader, mainContainer);
+        this.showGaragePage();
+    }
+
+    public showGaragePage() {
+       mainContainer.appendChild(this.generateHeader(5));
+       const list = new CarsList();
+       list.drawList(this.loader, mainContainer);
+    }
+
+    public generateHeader(count: number) {
+        const header = document.createElement('h1');
+        header.classList.add('h1');
+        header.textContent = `Garage(${count})`;
+        return header;
     }
 }
