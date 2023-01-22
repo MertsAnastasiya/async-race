@@ -20,8 +20,8 @@ export class CarsList {
                     const car: Car = new Car(
                         parentElement,
                         carData,
-                        (carImage: HTMLDivElement) => this.moveCarStart(carImage),
-                        (carImage: HTMLDivElement) => this.moveCarStop(carImage),
+                        (carImage: HTMLImageElement) => this.moveCarStart(carImage),
+                        (carImage: HTMLImageElement) => this.moveCarStop(carImage),
                         (id: number) => this.onRemoveButtonClick(id),
                         (car: CarType) => this.onSelectButtonClick(car)
                     );
@@ -30,12 +30,12 @@ export class CarsList {
             });
     }
 
-    private moveCarStart(carImage: HTMLDivElement) {
+    private moveCarStart(carImage: HTMLImageElement) {
         carImage.style.left = '500px';
         console.log('click start');
     }
 
-    private moveCarStop(carImage: HTMLDivElement) {
+    private moveCarStop(carImage: HTMLImageElement) {
         carImage.style.left = '0';
         console.log('click stop');
     }

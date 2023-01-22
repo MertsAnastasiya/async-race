@@ -6,7 +6,7 @@ export type CarType = {
     color: string;
 };
 
-type onClickMove = (carImage: HTMLDivElement) => void;
+type onClickMove = (carImage: HTMLImageElement) => void;
 
 export class Car {
     private parentElement: Element;
@@ -28,13 +28,13 @@ export class Car {
     }
 
     public drawCar() {
-        const wrapperCar = document.createElement('div');
+        const wrapperCar: Element = document.createElement('div');
         wrapperCar.classList.add('car__wrapper');
 
-        const buttonsCar = document.createElement('div');
+        const buttonsCar: Element = document.createElement('div');
         buttonsCar.classList.add('car__buttons');
 
-        const buttonSelect = document.createElement('div');
+        const buttonSelect: Element = document.createElement('div');
         buttonSelect.textContent = 'Select';
         buttonSelect.classList.add('button');
         buttonSelect.classList.add('button_select');
@@ -43,7 +43,7 @@ export class Car {
             console.log('click select');
         });
 
-        const buttonRemove = document.createElement('div');
+        const buttonRemove: Element = document.createElement('div');
         buttonRemove.textContent = 'Remove';
         buttonRemove.classList.add('button');
         buttonRemove.classList.add('button_remove');
@@ -55,13 +55,15 @@ export class Car {
         buttonsCar.appendChild(buttonSelect);
         buttonsCar.appendChild(buttonRemove);
 
-        const name = document.createElement('div');
+        const name: Element = document.createElement('div');
         name.classList.add('car__name');
         name.textContent = this.carData.name;
 
-        const imgCar = document.createElement('div');
+        const imgCar: HTMLImageElement = document.createElement('img');
+        imgCar.setAttribute('src', './assets/img/car.svg');
+
         imgCar.classList.add('car__image');
-        imgCar.style.fill = 'red';
+        imgCar.style.fill = '#ff74b3';
 
         const startMove = document.createElement('div');
         startMove.classList.add('start');
