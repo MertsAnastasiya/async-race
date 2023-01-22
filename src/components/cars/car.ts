@@ -1,4 +1,4 @@
-import { OnRemoveButtonClick } from './carsList';
+import { OnRemoveButtonClick, OnSelectButtonClick } from './carsList';
 
 export type CarType = {
     id: number;
@@ -14,15 +14,17 @@ export class Car {
     private onClickStart: onClickMove;
     private onClickStop: onClickMove;
     private onRemoveButtonClick: OnRemoveButtonClick;
+    private onSelectButtonClick: OnSelectButtonClick;
 
     constructor(parentElement: Element, carData: CarType,
         onClickStart: onClickMove, onClickStop: onClickMove,
-        onRemoveButtonClick: OnRemoveButtonClick) {
+        onRemoveButtonClick: OnRemoveButtonClick, onSelectButtonClick: OnSelectButtonClick) {
         this.parentElement = parentElement;
         this.carData = carData;
         this.onClickStart = onClickStart;
         this.onClickStop = onClickStop;
-        this.onRemoveButtonClick = onRemoveButtonClick
+        this.onRemoveButtonClick = onRemoveButtonClick;
+        this.onSelectButtonClick = onSelectButtonClick;
     }
 
     public drawCar() {
@@ -37,6 +39,7 @@ export class Car {
         buttonSelect.classList.add('button');
         buttonSelect.classList.add('button_select');
         buttonSelect.addEventListener('click', () => {
+            this.onSelectButtonClick(this.carData);
             console.log('click select');
         });
 

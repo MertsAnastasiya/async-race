@@ -1,6 +1,7 @@
 import { Winners } from '../winners/winners';
 import { Loader } from '../controller/loader';
 import { CarsList } from '../cars/carsList';
+import { CarType } from '../cars/car';
 
 const navigation: Element = document.querySelector('.navigation')!;
 const mainContent: Element = document.querySelector('.content')!;
@@ -62,6 +63,7 @@ export class App {
         const wrapper = document.createElement('div');
         wrapper.classList.add('forms__wrapper');
         wrapper.appendChild(this.formCreateCar('create'));
+        wrapper.appendChild(this.formCreateCar('update'));
         return wrapper;
     }
 
@@ -98,6 +100,10 @@ export class App {
             this.onCreateButtonClick();
             return;
         }
+        if (target.classList.value.includes('button_update')) {
+            this.onUpdateButtonClick();
+            return;
+        }
     }
 
     private onCreateButtonClick(): void {
@@ -112,6 +118,26 @@ export class App {
         this.updateGarageContent();
     }
 
+    private onUpdateButtonClick(): void {
+        const inputName = document.querySelector('.input_name_update')! as HTMLInputElement;
+        const inputColor = document.querySelector('.input_color_update')! as HTMLInputElement;
+        const newCar = {
+            name: inputName.value,
+            color: inputColor.value,
+        };
+        inputName.value = '';
+        this.loader.updateCar(newCar, Number(inputName.dataset.idCar));
+        this.updateGarageContent();
+    }
+
+    private onSelectButtonClick(car: CarType): void {
+        const inputName = document.querySelector('.input_name_update')! as HTMLInputElement;
+        const inputColor = document.querySelector('.input_color_update')! as HTMLInputElement;
+        inputName.value = car.name;
+        inputColor.value = car.color;
+        inputName.dataset.idCar = String(car.id);
+    }
+
     private onRemoveButtonClick(id: number): void {
         this.loader.deleteCar(id);
         this.updateGarageContent();
@@ -119,7 +145,10 @@ export class App {
 
     private updateGarageContent() {
         contentWrapper.innerHTML = '';
-        const carsList = new CarsList((id: number) => this.onRemoveButtonClick(id));
+        const carsList = new CarsList(
+            (id: number) => this.onRemoveButtonClick(id),
+            (car: CarType) => this.onSelectButtonClick(car)
+        );
         carsList.drawList(this.loader, contentWrapper);
         mainContent.appendChild(contentWrapper);
     }
