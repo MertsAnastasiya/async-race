@@ -10,12 +10,12 @@ export class CarsList {
         this.onRemoveButtonClick = onRemoveButtonClick;
     }
 
-    public drawList(loader: Loader, mainContainer: Element) {
+    public drawList(loader: Loader, parentElement: Element) {
         loader.getData<CarType[]>('/garage')
             .then((carsData) => {
                 carsData.forEach((carData) => {
                     const car: Car = new Car(
-                        mainContainer,
+                        parentElement,
                         carData,
                         (carImage: HTMLDivElement) => this.moveCarStart(carImage),
                         (carImage: HTMLDivElement) => this.moveCarStop(carImage),
