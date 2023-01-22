@@ -1,13 +1,32 @@
 .button {
+    @include font($size: 1.8rem);
     background-color: $color-add;
     color: $color-text;
     padding: 0.5rem;
     border: 1px solid $color-add;
     border-radius: $radius;
     cursor: pointer;
+    min-width: 8rem;
+    text-transform: capitalize;
+    text-align: center;
 
     &_light {
         background-color: $color-text;
         color: $color-add;
     }
+
+    &_main {
+        width: 30%;
+        text-align: center;
+        background-color: $color-buttons;
+        border: 1px solid $color-buttons;
+        @include font($size: 2rem, $weight: 700);
+    }
+}
+
+.buttons__wrapper {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin: 1rem 0;
 }

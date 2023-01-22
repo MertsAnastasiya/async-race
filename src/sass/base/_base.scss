@@ -13,3 +13,8 @@ body {
     color: $color-text;
     @include font($size: 2rem);
 }
+
+.h1 {
+    text-align: center;
+    @include font($size: 2.5rem, $weight: 700);
+}
