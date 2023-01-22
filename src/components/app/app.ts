@@ -2,8 +2,9 @@ import { Winners } from '../winners/winners';
 import { Loader } from '../controller/loader';
 import { CarsList } from '../cars/carsList';
 
-const mainContent: Element = document.querySelector('.content')!;
 const navigation: Element = document.querySelector('.navigation')!;
+const mainContent: Element = document.querySelector('.content')!;
+const contentWrapper: Element = document.createElement('div');
 
 export class App {
     private baseUrl: string = 'http://127.0.0.1:3000';
@@ -17,9 +18,8 @@ export class App {
     public showGaragePage(): void {
         mainContent.innerHTML = '';
         mainContent.appendChild(this.generateHeader(4));
-        mainContent.appendChild(this.formCreateCar('create'));
-        const carsList = new CarsList();
-        carsList.drawList(this.loader, mainContent);
+        mainContent.appendChild(this.createForms());
+        this.updateGarageContent();
     }
 
     public generateHeader(count: number) {
@@ -58,6 +58,13 @@ export class App {
         mainContent.innerHTML = 'Winners';
     }
 
+    private createForms(): Element {
+        const wrapper = document.createElement('div');
+        wrapper.classList.add('forms__wrapper');
+        wrapper.appendChild(this.formCreateCar('create'));
+        return wrapper;
+    }
+
     private formCreateCar(type: string): Element {
         const inputName = document.createElement('input');
         inputName.type = 'text';
@@ -93,7 +100,7 @@ export class App {
         }
     }
 
-    private onCreateButtonClick() {
+    private onCreateButtonClick(): void {
         const inputName = document.querySelector('.input_name_create')! as HTMLInputElement;
         const inputColor = document.querySelector('.input_color_create')! as HTMLInputElement;
         const newCar = {
@@ -102,6 +109,18 @@ export class App {
         };
         inputName.value = '';
         this.loader.createCar(newCar);
+        this.updateGarageContent();
     }
 
+    private onRemoveButtonClick(id: number): void {
+        this.loader.deleteCar(id);
+        this.updateGarageContent();
+    }
+
+    private updateGarageContent() {
+        contentWrapper.innerHTML = '';
+        const carsList = new CarsList((id: number) => this.onRemoveButtonClick(id));
+        carsList.drawList(this.loader, contentWrapper);
+        mainContent.appendChild(contentWrapper);
+    }
 }
