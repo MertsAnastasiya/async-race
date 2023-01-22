@@ -17,6 +17,7 @@ export class App {
     public showGaragePage(): void {
         mainContent.innerHTML = '';
         mainContent.appendChild(this.generateHeader(4));
+        mainContent.appendChild(this.formCreateCar('create'));
         const carsList = new CarsList();
         carsList.drawList(this.loader, mainContent);
     }
@@ -56,4 +57,51 @@ export class App {
     private showWinersPage() {
         mainContent.innerHTML = 'Winners';
     }
+
+    private formCreateCar(type: string): Element {
+        const inputName = document.createElement('input');
+        inputName.type = 'text';
+        inputName.classList.add('input');
+        inputName.classList.add('input_name');
+        inputName.classList.add(`input_name_${type}`);
+
+        const inputColor = document.createElement('input');
+        inputColor.type = 'color';
+        inputColor.classList.add('input');
+        inputColor.classList.add('input_color');
+        inputColor.classList.add(`input_color_${type}`);
+
+        const button = document.createElement('button');
+        button.classList.add('button');
+        button.classList.add(`button_${type}`);
+        button.textContent = type;
+        button.addEventListener('click', (event) => this.onButtonCreateUpdateClick(event));
+
+        const fieldsCreate = document.createElement('div');
+        fieldsCreate.classList.add(`wrapper__${type}`);
+        fieldsCreate.appendChild(inputName);
+        fieldsCreate.appendChild(inputColor);
+        fieldsCreate.appendChild(button);
+        return fieldsCreate;
+    }
+
+    private onButtonCreateUpdateClick(event: Event): void {
+        const target = event.target as Element;
+        if (target.classList.value.includes('button_create')) {
+            this.onCreateButtonClick();
+            return;
+        }
+    }
+
+    private onCreateButtonClick() {
+        const inputName = document.querySelector('.input_name_create')! as HTMLInputElement;
+        const inputColor = document.querySelector('.input_color_create')! as HTMLInputElement;
+        const newCar = {
+            name: inputName.value,
+            color: inputColor.value,
+        };
+        inputName.value = '';
+        this.loader.createCar(newCar);
+    }
+
 }
