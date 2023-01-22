@@ -25,4 +25,10 @@ export class Loader {
         });
     }
 
+    public async deleteCar(id: number) {
+        await fetch(`${this.baseLink}/garage/${id}`, {
+            method: 'DELETE',
+        });
+    }
+
 }

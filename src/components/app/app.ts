@@ -18,7 +18,7 @@ export class App {
         mainContent.innerHTML = '';
         mainContent.appendChild(this.generateHeader(4));
         mainContent.appendChild(this.formCreateCar('create'));
-        const carsList = new CarsList();
+        const carsList = new CarsList((id: number) => this.onRemoveButtonClick(id));
         carsList.drawList(this.loader, mainContent);
     }
 
@@ -93,7 +93,7 @@ export class App {
         }
     }
 
-    private onCreateButtonClick() {
+    private onCreateButtonClick(): void {
         const inputName = document.querySelector('.input_name_create')! as HTMLInputElement;
         const inputColor = document.querySelector('.input_color_create')! as HTMLInputElement;
         const newCar = {
@@ -102,6 +102,10 @@ export class App {
         };
         inputName.value = '';
         this.loader.createCar(newCar);
+    }
+
+    private onRemoveButtonClick(id: number): void {
+        this.loader.deleteCar(id);
     }
 
 }
