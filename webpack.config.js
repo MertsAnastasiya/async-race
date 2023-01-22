@@ -16,12 +16,16 @@ const config = {
     path: path.resolve(__dirname, "dist"),
   },
   devServer: {
-    open: true,
-    host: "localhost",
-  },
+    static: {
+        directory: path.join(__dirname, "dist"),
+    },
+    compress: true,
+    port: 9000,
+    hot: false,
+},
   plugins: [
     new HtmlWebpackPlugin({
-      template: "index.html",
+      template: "./src/index.html",
     }),
 
     // Add your plugins here
