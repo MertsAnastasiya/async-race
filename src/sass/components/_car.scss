@@ -10,10 +10,12 @@
 }
 
 .car__image {
-    width: 10rem;
+    display: block;
+    width: 15rem;
     height: 5rem;
-    background: url('../assets/img/car.png') no-repeat;
-    background-size: contain;
+    color: aquamarine;
+    // background: url('../assets/img/car.svg') no-repeat;
+    // background-size: contain;
 }
 
 .car__move {
