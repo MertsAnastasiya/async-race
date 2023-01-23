@@ -3,14 +3,17 @@ import { Car, CarType } from './car';
 
 export type OnRemoveButtonClick = (id: number) => void;
 export type OnSelectButtonClick = (car: CarType) => void;
+export type OnStartEngine = () => void;
 
 export class CarsList {
     private onRemoveButtonClick: OnRemoveButtonClick;
     private onSelectButtonClick: OnSelectButtonClick;
+    private onStartEngine: OnStartEngine;
 
-    constructor(onRemoveButtonClick: OnRemoveButtonClick, onSelectButtonClick: OnSelectButtonClick) {
+    constructor(onRemoveButtonClick: OnRemoveButtonClick, onSelectButtonClick: OnSelectButtonClick, onStartEngine: OnStartEngine) {
         this.onRemoveButtonClick = onRemoveButtonClick;
         this.onSelectButtonClick = onSelectButtonClick;
+        this.onStartEngine = onStartEngine;
     }
 
     public drawList(loader: Loader, parentElement: Element) {
@@ -20,7 +23,8 @@ export class CarsList {
                     const car: Car = new Car(
                         parentElement,
                         carData,
-                        (carImage: HTMLImageElement) => this.moveCarStart(carImage),
+                        () => this.onStartEngine(),
+                        // (carImage: HTMLImageElement) => this.moveCarStart(carImage),
                         (carImage: HTMLImageElement) => this.moveCarStop(carImage),
                         (id: number) => this.onRemoveButtonClick(id),
                         (car: CarType) => this.onSelectButtonClick(car)

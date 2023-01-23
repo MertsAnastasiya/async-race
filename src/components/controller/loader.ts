@@ -1,3 +1,4 @@
+import { Engine } from '../app/app';
 import { CarType } from '../cars/car';
 
 export class Loader {
@@ -40,6 +41,16 @@ export class Loader {
     public async deleteCar(id: number) {
         await fetch(`${this.baseLink}/garage/${id}`, {
             method: 'DELETE',
+        });
+    }
+
+    public async getEngineData<T>(id: number): Promise<T> {
+        return fetch(`${this.baseLink}/engine/?id=${id}&status=started`, { method: 'PATCH' })
+        .then((response: Response) => {
+            if(!response.ok) {
+                throw new Error(response.statusText);
+            }
+            return response.json();
         });
     }
 }

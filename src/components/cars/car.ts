@@ -1,4 +1,4 @@
-import { OnRemoveButtonClick, OnSelectButtonClick } from './carsList';
+import { OnRemoveButtonClick, OnSelectButtonClick, OnStartEngine } from './carsList';
 
 export type CarType = {
     id: number;
@@ -6,18 +6,18 @@ export type CarType = {
     color: string;
 };
 
-type onClickMove = (carImage: HTMLImageElement) => void;
+// type onClickMove = (carImage: HTMLImageElement) => void;
 
 export class Car {
     private parentElement: Element;
     private carData: CarType;
-    private onClickStart: onClickMove;
-    private onClickStop: onClickMove;
+    private onClickStart: OnStartEngine;
+    private onClickStop: OnStartEngine;
     private onRemoveButtonClick: OnRemoveButtonClick;
     private onSelectButtonClick: OnSelectButtonClick;
 
     constructor(parentElement: Element, carData: CarType,
-        onClickStart: onClickMove, onClickStop: onClickMove,
+        onClickStart: OnStartEngine, onClickStop: OnStartEngine,
         onRemoveButtonClick: OnRemoveButtonClick, onSelectButtonClick: OnSelectButtonClick) {
         this.parentElement = parentElement;
         this.carData = carData;
@@ -79,8 +79,8 @@ export class Car {
         stopMove.classList.add('button');
         stopMove.classList.add('button_light');
         stopMove.textContent = 'off';
-        stopMove.addEventListener('click', () => {
-            this.onClickStop(imgCar);
+        stopMove.addEventListener('click', (event) => {
+            this.onClickStop(event);
         });
 
         const wrapperMove = document.createElement('div');

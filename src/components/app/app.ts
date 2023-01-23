@@ -7,6 +7,11 @@ const navigation: Element = document.querySelector('.navigation')!;
 const mainContent: Element = document.querySelector('.content')!;
 const contentWrapper: Element = document.createElement('div');
 
+export type Engine = {
+    velocity: number,
+    distanse: number,
+}
+
 export class App {
     private baseUrl: string = 'http://127.0.0.1:3000';
     private loader: Loader = new Loader(this.baseUrl);
@@ -149,9 +154,23 @@ export class App {
         contentWrapper.innerHTML = '';
         const carsList = new CarsList(
             (id: number) => this.onRemoveButtonClick(id),
-            (car: CarType) => this.onSelectButtonClick(car)
+            (car: CarType) => this.onSelectButtonClick(car),
+            (event: Event) => this.switchOnEngine(event)
         );
         carsList.drawList(this.loader, contentWrapper);
         mainContent.appendChild(contentWrapper);
+    }
+
+    private switchOnEngine(event: Event) {
+        console.log('start');
+        this.loader.getEngineData<Engine>(1)
+            .then((data: Engine) => {
+                const elem = event.target! as HTMLElement;
+                const px = elem.offsetWidth;
+                console.log(px);
+                console.log(data);
+
+
+            })
     }
 }
