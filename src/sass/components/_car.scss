@@ -1,0 +1,34 @@
+.car__wrapper {
+    padding: 1rem;
+    border-bottom: 1px dashed $color-text;
+}
+
+.car__buttons {
+    display: flex;
+    gap: 1rem;
+    padding-top: 1rem;
+}
+
+.car__image {
+    display: block;
+    width: 15rem;
+    height: 5rem;
+    color: aquamarine;
+    // background: url('../assets/img/car.svg') no-repeat;
+    // background-size: contain;
+}
+
+.car__move {
+    display: flex;
+    gap: 1rem;
+    padding: 1rem 0;
+}
+
+.move {
+    background-color: $color-text;
+    color: $color-add;
+}
+
+.car__name {
+    padding: 1rem 0;
+}
