@@ -7,7 +7,7 @@ type Winner = {
     time: number;
 }
 
-export class PageContent {
+export class Winners {
     private parentElement: Element;
     private loader: Loader = new Loader('http://127.0.0.1:3000');
 

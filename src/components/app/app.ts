@@ -1,8 +1,7 @@
-// import { Winners } from '../view/page';
 import { Loader } from '../controller/loader';
 import { CarsList } from '../cars/carsList';
 import { CarType } from '../cars/car';
-import { PageContent } from '../view/page';
+import { Winners } from '../view/winners';
 
 const navigation: Element = document.querySelector('.navigation')!;
 const mainContent: Element = document.querySelector('.content')!;
@@ -58,19 +57,19 @@ export class App {
 
     private showWinersPage() {
         mainContent.innerHTML = '';
-        const winPage: PageContent = new PageContent(mainContent);
+        const winPage: Winners = new Winners(mainContent);
         winPage.drawWinnersPage();
     }
 
     private createForms(): Element {
         const wrapper = document.createElement('div');
         wrapper.classList.add('forms__wrapper');
-        wrapper.appendChild(this.formCreateCar('create'));
-        wrapper.appendChild(this.formCreateCar('update'));
+        wrapper.appendChild(this.formCreateUpdateCar('create'));
+        wrapper.appendChild(this.formCreateUpdateCar('update'));
         return wrapper;
     }
 
-    private formCreateCar(type: string): Element {
+    private formCreateUpdateCar(type: string): Element {
         const inputName = document.createElement('input');
         inputName.type = 'text';
         inputName.classList.add('input');

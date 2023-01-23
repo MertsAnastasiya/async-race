@@ -69,7 +69,7 @@ export class Car {
         startMove.classList.add('start');
         startMove.classList.add('button');
         startMove.classList.add('button_light');
-        startMove.textContent = 'Start';
+        startMove.textContent = 'on';
         startMove.addEventListener('click', () => {
             this.onClickStart(imgCar);
         });
@@ -78,7 +78,7 @@ export class Car {
         stopMove.classList.add('stop');
         stopMove.classList.add('button');
         stopMove.classList.add('button_light');
-        stopMove.textContent = 'Stop';
+        stopMove.textContent = 'off';
         stopMove.addEventListener('click', () => {
             this.onClickStop(imgCar);
         });
