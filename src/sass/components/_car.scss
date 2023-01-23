@@ -1,6 +1,19 @@
 .car__wrapper {
     padding: 1rem;
     border-bottom: 1px dashed $color-text;
+    position: relative;
+
+    &::after {
+        content: ' ';
+        background-image: url('../assets/img/finish.svg');
+        background-position: center;
+        background-size: cover;
+        width: 5rem;
+        height: 5rem;
+        position: absolute;
+        right: 5rem;
+        bottom : 0;
+    }
 }
 
 .car__buttons {
@@ -13,7 +26,6 @@
     display: block;
     width: 15rem;
     height: 5rem;
-    color: aquamarine;
     // background: url('../assets/img/car.svg') no-repeat;
     // background-size: contain;
 }
