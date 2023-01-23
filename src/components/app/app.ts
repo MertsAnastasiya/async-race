@@ -1,7 +1,8 @@
-import { Winners } from '../winners/winners';
+// import { Winners } from '../view/page';
 import { Loader } from '../controller/loader';
 import { CarsList } from '../cars/carsList';
 import { CarType } from '../cars/car';
+import { PageContent } from '../view/page';
 
 const navigation: Element = document.querySelector('.navigation')!;
 const mainContent: Element = document.querySelector('.content')!;
@@ -56,7 +57,9 @@ export class App {
     }
 
     private showWinersPage() {
-        mainContent.innerHTML = 'Winners';
+        mainContent.innerHTML = '';
+        const winPage: PageContent = new PageContent(mainContent);
+        winPage.drawWinnersPage();
     }
 
     private createForms(): Element {
