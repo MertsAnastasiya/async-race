@@ -1,12 +1,13 @@
 .button {
-    @include font($size: 1.8rem);
+    @include font($size: 2rem);
+    width: 10rem;
+    font-family: Montserrat, Arial;
     background-color: $color-add;
     color: $color-text;
     padding: 0.5rem;
     border: 1px solid $color-add;
     border-radius: $radius;
     cursor: pointer;
-    // min-width: 8rem;
     text-transform: capitalize;
     text-align: center;
 
