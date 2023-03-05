@@ -1,0 +1,9 @@
+@keyframes race {
+    from {
+        transform: translateX(0);
+    }
+    to {
+        transform: translateX(var(--road-width));
+
+    }
+}

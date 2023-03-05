@@ -17,4 +17,4 @@ export type Engine = {
 
 export type OnRemoveButtonClick = (id: number) => void;
 export type OnSelectButtonClick = (car: CarType) => void;
-export type OnStartEngine = (event: Event) => void;
+export type OnStartEngine = (id: number) => void;

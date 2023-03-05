@@ -22,15 +22,15 @@ export class App {
         this.updateGarageContent();
     }
 
-    public generateHeader(count: number) {
-        // public generateHeader(count: number) {
+    public generateHeader(count: number): Element {
         const header: Element = document.createElement('h1');
         header.classList.add('h1');
         header.textContent = `Garage(${count})`;
+
         return header;
     }
 
-    private generateButtonsLinks() {
+    private generateButtonsLinks(): void {
         const buttonsWrapper = document.createElement('div');
         buttonsWrapper.classList.add('buttons__wrapper');
 
@@ -55,7 +55,7 @@ export class App {
         navigation.appendChild(buttonsWrapper);
     }
 
-    private showWinersPage() {
+    private showWinersPage(): void {
         mainContent.innerHTML = '';
         const winPage: Winners = new Winners(mainContent);
         winPage.draw();
@@ -144,12 +144,10 @@ export class App {
     }
 
     private onSelectButtonClick(car: CarType): void {
-        const inputName = document.querySelector(
-            '.input_name_update'
-        )! as HTMLInputElement;
-        const inputColor = document.querySelector(
-            '.input_color_update'
-        )! as HTMLInputElement;
+        const inputName: HTMLInputElement =
+            document.querySelector<HTMLInputElement>('.input_name_update')!;
+        const inputColor: HTMLInputElement =
+            document.querySelector<HTMLInputElement>('.input_color_update')!;
         inputName.value = car.name;
         inputColor.value = car.color;
         inputName.dataset.idCar = String(car.id);
@@ -165,20 +163,16 @@ export class App {
         const carsList = new CarsList(
             (id: number) => this.onRemoveButtonClick(id),
             (car: CarType) => this.onSelectButtonClick(car),
-            (event: Event) => this.switchOnEngine(event)
+            (id: number) => this.switchOnEngine(id)
         );
         carsList.draw(contentWrapper);
         mainContent.appendChild(contentWrapper);
     }
 
-    private switchOnEngine(event: Event): void {
-        console.log('start');
-        this.loader.getEngineData<Engine>(1).then((data: Engine) => {
-            const elem = event.target! as HTMLElement;
-            const px = elem.offsetWidth;
-            console.log(px);
-            console.log(data);
-        });
+    private async switchOnEngine(id: number): Promise<void> {
+        const car: HTMLElement = document.getElementById(String(id))!;
+        const width: number = car.parentElement!.offsetWidth - 90;
+        this.setAnimationParametrs(car, width);
     }
 
     private createButtons(): Element {
@@ -189,6 +183,14 @@ export class App {
         buttonRace.classList.add('button');
         buttonRace.classList.add('button_race');
         buttonRace.textContent = 'Race';
+        buttonRace.addEventListener('click', () => {
+            const cars: NodeListOf<HTMLElement> =
+                document.querySelectorAll('.car__image');
+            cars.forEach(async (car) => {
+                const width: number = car.parentElement!.offsetWidth - 90;
+                this.setAnimationParametrs(car, width);
+            });
+        });
 
         const buttonReset: Element = document.createElement('div');
         buttonReset.classList.add('button');
@@ -218,6 +220,18 @@ export class App {
             this.loader.createCar(newCar);
             console.log(newCar);
         }
+    }
+
+    private async setAnimationParametrs(car: HTMLElement, width: number): Promise<void> {
+        car.style.setProperty('--road-width', `${width}px`);
+        const dataEngine: Engine = await this.loader.getEngineData<Engine>(1);
+        const time: string = (500 / dataEngine.velocity).toFixed(2);
+        car.style.animationName = 'race';
+        car.style.animationDuration = `${time}s`;
+        car.style.animationDelay = '0s';
+        car.style.animationTimingFunction = 'linear';
+        car.style.animationIterationCount = '1';
+        car.style.animationFillMode = 'forwards';
     }
 
     private generateName(): string {

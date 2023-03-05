@@ -8,7 +8,7 @@ import {
 export class Car {
     private parentElement: Element;
     private carData: CarType;
-    private onClickStart: OnStartEngine;
+    private onStartEngine: OnStartEngine;
     private onClickStop: OnStartEngine;
     private onRemoveButtonClick: OnRemoveButtonClick;
     private onSelectButtonClick: OnSelectButtonClick;
@@ -16,14 +16,14 @@ export class Car {
     constructor(
         parentElement: Element,
         carData: CarType,
-        onClickStart: OnStartEngine,
+        onStartEngine: OnStartEngine,
         onClickStop: OnStartEngine,
         onRemoveButtonClick: OnRemoveButtonClick,
         onSelectButtonClick: OnSelectButtonClick
     ) {
         this.parentElement = parentElement;
         this.carData = carData;
-        this.onClickStart = onClickStart;
+        this.onStartEngine = onStartEngine;
         this.onClickStop = onClickStop;
         this.onRemoveButtonClick = onRemoveButtonClick;
         this.onSelectButtonClick = onSelectButtonClick;
@@ -63,6 +63,7 @@ export class Car {
 
         const imgCar: HTMLElement = document.createElement('div');
         imgCar.classList.add('car__image');
+        imgCar.setAttribute('id', `${this.carData.id}`);
         imgCar.style.backgroundColor = this.carData.color;
 
         const startMove = document.createElement('div');
@@ -70,19 +71,14 @@ export class Car {
         startMove.classList.add('button');
         startMove.classList.add('button_light');
         startMove.textContent = 'on';
-        startMove.addEventListener('click', (event: Event) => {
-            this.onClickStart(event);
-            // this.onClickStart(imgCar);
-        });
+        startMove.addEventListener('click', this.onStartEngine.bind(this, this.carData.id));
 
         const stopMove = document.createElement('div');
         stopMove.classList.add('stop');
         stopMove.classList.add('button');
         stopMove.classList.add('button_light');
         stopMove.textContent = 'off';
-        stopMove.addEventListener('click', (event) => {
-            this.onClickStop(event);
-        });
+        stopMove.addEventListener('click', this.onClickStop.bind(this, this.carData.id));
 
         const wrapperMove = document.createElement('div');
         wrapperMove.classList.add('car__move');
