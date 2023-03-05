@@ -1,12 +1,9 @@
-import { OnRemoveButtonClick, OnSelectButtonClick, OnStartEngine } from './carsList';
-
-export type CarType = {
-    id: number;
-    name: string;
-    color: string;
-};
-
-// type onClickMove = (carImage: HTMLImageElement) => void;
+import {
+    CarType,
+    OnRemoveButtonClick,
+    OnSelectButtonClick,
+    OnStartEngine,
+} from '../types';
 
 export class Car {
     private parentElement: Element;
@@ -16,9 +13,14 @@ export class Car {
     private onRemoveButtonClick: OnRemoveButtonClick;
     private onSelectButtonClick: OnSelectButtonClick;
 
-    constructor(parentElement: Element, carData: CarType,
-        onClickStart: OnStartEngine, onClickStop: OnStartEngine,
-        onRemoveButtonClick: OnRemoveButtonClick, onSelectButtonClick: OnSelectButtonClick) {
+    constructor(
+        parentElement: Element,
+        carData: CarType,
+        onClickStart: OnStartEngine,
+        onClickStop: OnStartEngine,
+        onRemoveButtonClick: OnRemoveButtonClick,
+        onSelectButtonClick: OnSelectButtonClick
+    ) {
         this.parentElement = parentElement;
         this.carData = carData;
         this.onClickStart = onClickStart;
@@ -27,7 +29,7 @@ export class Car {
         this.onSelectButtonClick = onSelectButtonClick;
     }
 
-    public drawCar() {
+    public draw() {
         const wrapperCar: Element = document.createElement('div');
         wrapperCar.classList.add('car__wrapper');
 
@@ -59,19 +61,18 @@ export class Car {
         name.classList.add('car__name');
         name.textContent = this.carData.name;
 
-        const imgCar: HTMLImageElement = document.createElement('img');
-        imgCar.setAttribute('src', './assets/img/car.svg');
-
+        const imgCar: HTMLElement = document.createElement('div');
         imgCar.classList.add('car__image');
-        imgCar.style.fill = '#ff74b3';
+        imgCar.style.backgroundColor = this.carData.color;
 
         const startMove = document.createElement('div');
         startMove.classList.add('start');
         startMove.classList.add('button');
         startMove.classList.add('button_light');
         startMove.textContent = 'on';
-        startMove.addEventListener('click', () => {
-            this.onClickStart(imgCar);
+        startMove.addEventListener('click', (event: Event) => {
+            this.onClickStart(event);
+            // this.onClickStart(imgCar);
         });
 
         const stopMove = document.createElement('div');

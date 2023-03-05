@@ -1,22 +1,17 @@
 import { Loader } from '../controller/loader';
 import { CarsList } from '../cars/carsList';
-import { CarType } from '../cars/car';
+import { CarType, Engine } from '../types';
 import { Winners } from '../view/winners';
 
 const navigation: Element = document.querySelector('.navigation')!;
 const mainContent: Element = document.querySelector('.content')!;
 const contentWrapper: Element = document.createElement('div');
 
-export type Engine = {
-    velocity: number,
-    distanse: number,
-}
-
 export class App {
     private baseUrl: string = 'http://127.0.0.1:3000';
     private loader: Loader = new Loader(this.baseUrl);
 
-    public start() {
+    public start(): void {
         this.generateButtonsLinks();
         this.showGaragePage();
     }
@@ -63,7 +58,7 @@ export class App {
     private showWinersPage() {
         mainContent.innerHTML = '';
         const winPage: Winners = new Winners(mainContent);
-        winPage.drawWinnersPage();
+        winPage.draw();
     }
 
     private createForms(): Element {
@@ -161,7 +156,7 @@ export class App {
         mainContent.appendChild(contentWrapper);
     }
 
-    private switchOnEngine(event: Event) {
+    private switchOnEngine(event: Event): void {
         console.log('start');
         this.loader.getEngineData<Engine>(1)
             .then((data: Engine) => {
@@ -169,8 +164,6 @@ export class App {
                 const px = elem.offsetWidth;
                 console.log(px);
                 console.log(data);
-
-
-            })
+            });
     }
 }

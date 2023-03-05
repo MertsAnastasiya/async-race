@@ -1,11 +1,5 @@
-import { CarType } from '../cars/car';
+import { CarType, Winner } from '../types';
 import { Loader } from '../controller/loader';
-
-type Winner = {
-    id: number;
-    wins: number;
-    time: number;
-}
 
 export class Winners {
     private parentElement: Element;
@@ -15,8 +9,8 @@ export class Winners {
         this.parentElement = parentElement;
     }
 
-    public drawWinnersPage() {
-        const header = document.createElement('h1');
+    public draw(): void {
+        const header: Element = document.createElement('h1');
         header.classList.add('h1');
         header.textContent = `Winners(1)`;
         this.parentElement.appendChild(header);
@@ -63,13 +57,13 @@ export class Winners {
     }
 
     private createTableLine(table: Element, winnerData: Winner): void {
-        const tr = document.createElement('tr');
+        const tr: Element = document.createElement('tr');
 
-        const tdId = document.createElement('td');
+        const tdId: HTMLTableCellElement = document.createElement('td');
         tdId.innerText = String(winnerData.id);
-        const tdCar = document.createElement('td');
+        const tdCar: HTMLTableCellElement = document.createElement('td');
         tdCar.classList.add('td_image');
-        const tdName = document.createElement('td');
+        const tdName: HTMLTableCellElement = document.createElement('td');
         this.loader.getData<CarType>(`/garage/${winnerData.id}`)
             .then((carData) => {
                 tdCar.style.background = `url('../assets/img/car.svg') no-repeat`;
@@ -78,9 +72,9 @@ export class Winners {
                 tdCar.style.backgroundPosition = 'center';
                 tdName.innerText = carData.name;
             });
-        const tdWins = document.createElement('td');
+        const tdWins: HTMLTableCellElement = document.createElement('td');
         tdWins.innerText = String(winnerData.wins);
-        const tdTime = document.createElement('td');
+        const tdTime: HTMLTableCellElement = document.createElement('td');
         tdTime.innerText = String(winnerData.time);
 
         tr.appendChild(tdId);

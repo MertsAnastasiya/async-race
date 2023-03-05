@@ -1,6 +1,3 @@
-import { Engine } from '../app/app';
-import { CarType } from '../cars/car';
-
 export class Loader {
     private baseLink: string;
 
