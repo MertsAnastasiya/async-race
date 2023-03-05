@@ -3,7 +3,8 @@ import { Loader } from '../controller/loader';
 
 export class Winners {
     private parentElement: Element;
-    private loader: Loader = new Loader('http://127.0.0.1:3000');
+    private loader: Loader = new Loader();
+    private place: number = 0;
 
     constructor(parentElement: Element) {
         this.parentElement = parentElement;
@@ -17,15 +18,15 @@ export class Winners {
         this.getWinners();
     }
 
-    private  getWinners(): void {
-        this.loader.getData<Winner[]>('/winners')
-            .then((winnersData) => {
-                this.parentElement.appendChild(this.createTable());
-
-                winnersData.forEach((winnerData) => {
-                    this.createTableLine(document.querySelector('.table')!, winnerData);
-                });
-            });
+    private async getWinners(): Promise<void> {
+        const winnersData: Winner[] = await this.loader.getData<Winner[]>(
+            '/winners'
+        );
+        this.parentElement.appendChild(this.createTable());
+        winnersData.sort((a, b) => a.time - b.time);
+        winnersData.forEach((winnerData) => {
+            this.createTableLine(document.querySelector('.table')!, winnerData);
+        });
     }
 
     private createTable(): Element {
@@ -56,22 +57,18 @@ export class Winners {
         return table;
     }
 
-    private createTableLine(table: Element, winnerData: Winner): void {
+    private async createTableLine(table: Element, winnerData: Winner): Promise<void> {
         const tr: Element = document.createElement('tr');
 
         const tdId: HTMLTableCellElement = document.createElement('td');
-        tdId.innerText = String(winnerData.id);
+        tdId.innerText = String(++this.place);
         const tdCar: HTMLTableCellElement = document.createElement('td');
         tdCar.classList.add('td_image');
         const tdName: HTMLTableCellElement = document.createElement('td');
-        this.loader.getData<CarType>(`/garage/${winnerData.id}`)
-            .then((carData) => {
-                tdCar.style.background = `url('../assets/img/car.svg') no-repeat`;
-                tdCar.style.backgroundSize = 'contain';
-                tdCar.style.backgroundColor = carData.color;
-                tdCar.style.backgroundPosition = 'center';
-                tdName.innerText = carData.name;
-            });
+        const carData: CarType = await this.loader.getData<CarType>(`/garage/${winnerData.id}`);
+        tdCar.style.backgroundColor = carData.color;
+        tdName.innerText = carData.name;
+
         const tdWins: HTMLTableCellElement = document.createElement('td');
         tdWins.innerText = String(winnerData.wins);
         const tdTime: HTMLTableCellElement = document.createElement('td');

@@ -8,8 +8,7 @@ const mainContent: Element = document.querySelector('.content')!;
 const contentWrapper: Element = document.createElement('div');
 
 export class App {
-    private baseUrl: string = 'http://127.0.0.1:3000';
-    private loader: Loader = new Loader(this.baseUrl);
+    private loader: Loader = new Loader();
 
     public start(): void {
         this.generateButtonsLinks();
@@ -18,12 +17,13 @@ export class App {
 
     public showGaragePage(): void {
         mainContent.innerHTML = '';
-        mainContent.appendChild(this.generateHeader(4));
+        mainContent.appendChild(this.generateHeader(5));
         mainContent.appendChild(this.createForms());
         this.updateGarageContent();
     }
 
     public generateHeader(count: number) {
+        // public generateHeader(count: number) {
         const header: Element = document.createElement('h1');
         header.classList.add('h1');
         header.textContent = `Garage(${count})`;
@@ -62,14 +62,15 @@ export class App {
     }
 
     private createForms(): Element {
-        const wrapper = document.createElement('div');
+        const wrapper: Element = document.createElement('div');
         wrapper.classList.add('forms__wrapper');
-        wrapper.appendChild(this.formCreateUpdateCar('create'));
-        wrapper.appendChild(this.formCreateUpdateCar('update'));
+        wrapper.appendChild(this.createForm('create'));
+        wrapper.appendChild(this.createForm('update'));
+        wrapper.appendChild(this.createButtons());
         return wrapper;
     }
 
-    private formCreateUpdateCar(type: string): Element {
+    private createForm(type: string): Element {
         const inputName = document.createElement('input');
         inputName.type = 'text';
         inputName.classList.add('input');
@@ -86,7 +87,9 @@ export class App {
         button.classList.add('button');
         button.classList.add(`button_${type}`);
         button.textContent = type;
-        button.addEventListener('click', (event) => this.onButtonCreateUpdateClick(event));
+        button.addEventListener('click', (event) =>
+            this.onButtonCreateUpdateClick(event)
+        );
 
         const fieldsCreate = document.createElement('div');
         fieldsCreate.classList.add(`wrapper__${type}`);
@@ -109,8 +112,12 @@ export class App {
     }
 
     private onCreateButtonClick(): void {
-        const inputName = document.querySelector('.input_name_create')! as HTMLInputElement;
-        const inputColor = document.querySelector('.input_color_create')! as HTMLInputElement;
+        const inputName = document.querySelector(
+            '.input_name_create'
+        )! as HTMLInputElement;
+        const inputColor = document.querySelector(
+            '.input_color_create'
+        )! as HTMLInputElement;
         const newCar = {
             name: inputName.value,
             color: inputColor.value,
@@ -121,8 +128,12 @@ export class App {
     }
 
     private onUpdateButtonClick(): void {
-        const inputName = document.querySelector('.input_name_update')! as HTMLInputElement;
-        const inputColor = document.querySelector('.input_color_update')! as HTMLInputElement;
+        const inputName = document.querySelector(
+            '.input_name_update'
+        )! as HTMLInputElement;
+        const inputColor = document.querySelector(
+            '.input_color_update'
+        )! as HTMLInputElement;
         const newCar = {
             name: inputName.value,
             color: inputColor.value,
@@ -133,8 +144,12 @@ export class App {
     }
 
     private onSelectButtonClick(car: CarType): void {
-        const inputName = document.querySelector('.input_name_update')! as HTMLInputElement;
-        const inputColor = document.querySelector('.input_color_update')! as HTMLInputElement;
+        const inputName = document.querySelector(
+            '.input_name_update'
+        )! as HTMLInputElement;
+        const inputColor = document.querySelector(
+            '.input_color_update'
+        )! as HTMLInputElement;
         inputName.value = car.name;
         inputColor.value = car.color;
         inputName.dataset.idCar = String(car.id);
@@ -145,25 +160,102 @@ export class App {
         this.updateGarageContent();
     }
 
-    private updateGarageContent() {
+    private updateGarageContent(): void {
         contentWrapper.innerHTML = '';
         const carsList = new CarsList(
             (id: number) => this.onRemoveButtonClick(id),
             (car: CarType) => this.onSelectButtonClick(car),
             (event: Event) => this.switchOnEngine(event)
         );
-        carsList.drawList(this.loader, contentWrapper);
+        carsList.draw(contentWrapper);
         mainContent.appendChild(contentWrapper);
     }
 
     private switchOnEngine(event: Event): void {
         console.log('start');
-        this.loader.getEngineData<Engine>(1)
-            .then((data: Engine) => {
-                const elem = event.target! as HTMLElement;
-                const px = elem.offsetWidth;
-                console.log(px);
-                console.log(data);
-            });
+        this.loader.getEngineData<Engine>(1).then((data: Engine) => {
+            const elem = event.target! as HTMLElement;
+            const px = elem.offsetWidth;
+            console.log(px);
+            console.log(data);
+        });
+    }
+
+    private createButtons(): Element {
+        const wrapper: Element = document.createElement('div');
+        wrapper.classList.add('wrapper');
+
+        const buttonRace: Element = document.createElement('div');
+        buttonRace.classList.add('button');
+        buttonRace.classList.add('button_race');
+        buttonRace.textContent = 'Race';
+
+        const buttonReset: Element = document.createElement('div');
+        buttonReset.classList.add('button');
+        buttonReset.classList.add('button_reset');
+        buttonReset.textContent = 'Reset';
+
+        const buttonGenerate: Element = document.createElement('div');
+        buttonGenerate.classList.add('button');
+        buttonGenerate.classList.add('button_reset');
+        buttonGenerate.textContent = 'Generate cars';
+        buttonGenerate.addEventListener('click', this.generateCars.bind(this));
+
+        wrapper.append(buttonRace);
+        wrapper.append(buttonReset);
+        wrapper.append(buttonGenerate);
+        return wrapper;
+    }
+
+    private generateCars(): void {
+        let n: number = 0;
+        while (n !== 100) {
+            n++;
+            const newCar = {
+                name: this.generateName(),
+                color: this.generateColor(),
+            };
+            this.loader.createCar(newCar);
+            console.log(newCar);
+        }
+    }
+
+    private generateName(): string {
+        const namesArray: string[] = [
+            'Opel',
+            'BMW',
+            'Audi',
+            'Volvo',
+            'Toyota',
+            'Mersedes',
+            'Honda',
+            'VM',
+            'Mazda',
+            'Peugeot',
+            'Citroen',
+        ];
+        const models = {
+            Opel: ['Astra', '1', '2', '3', '5'],
+            BMW: ['Serie 3', 'X3', 'X5', 'i4', 'Serie 5'],
+            Volvo: ['VC40', 'VC90', '3', '4', '5'],
+            Toyota: ['Rav4', '1', '2', '3', '4'],
+            Mersedes: ['520', 'Tys', 'Gh', 'Ggf', '8'],
+            Honda: ['Civic', 'f', 'g', 'j', 'l'],
+            VW: ['Golf', 'f', 's', 'a', 'l'],
+            Mazda: ['3', '5', 'CX-60', 'CX-9', 'CX-5'],
+            Audi: ['Q3', 'Q4', 'Q5', 'Q6', 'Q7'],
+            Peugeot: ['Q3', 'Q4', 'Q5', 'Q6', 'Q7'],
+            Citroen: ['Q3', 'Q4', 'Q5', 'Q6', 'Q7'],
+        };
+        const number: number = Math.floor(
+            Math.random() * (namesArray.length - 1)
+        );
+        const brand = namesArray[number]! as keyof typeof models;
+
+        return `${brand} ${models[brand][4]}`;
+    }
+
+    private generateColor(): string {
+        return Math.floor(Math.random() * 16777215).toString(16);
     }
 }

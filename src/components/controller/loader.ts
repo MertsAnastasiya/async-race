@@ -1,18 +1,11 @@
-export class Loader {
-    private baseLink: string;
+import { CarType } from '../types';
 
-    constructor(baseLink: string) {
-        this.baseLink = baseLink;
-    }
+export class Loader {
+    private baseLink: string = 'http://127.0.0.1:3000';
 
     public async getData<T>(options: string): Promise<T> {
-        return fetch(`${this.baseLink}${options}`)
-            .then((response: Response) => {
-                if(!response.ok) {
-                    throw new Error(response.statusText);
-                }
-                return response.json();
-            });
+        const data: T = await (await fetch(`${this.baseLink}${options}`)).json();
+        return data;
     }
 
     public async createCar(car: {name: string, color: string}) {

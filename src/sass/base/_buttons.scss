@@ -1,6 +1,6 @@
 .button {
     @include font($size: 2rem);
-    width: 10rem;
+    min-width: 10rem;
     font-family: Montserrat, Arial;
     background-color: $color-add;
     color: $color-text;

@@ -7,7 +7,12 @@ th {
     color: $color-add;
 }
 
-// .td_image {
-//     background-repeat: no-repeat;
-//     background-size: cover;
-// }
+.td_image {
+    display: block;
+    width: 10rem;
+    height: 3rem;
+    -webkit-mask: url('../assets/img/car.svg') no-repeat center;
+    mask: url('../assets/img/car.svg') no-repeat center;
+    mask-size: 50%;
+    -webkit-mask-size: 50%;
+}
