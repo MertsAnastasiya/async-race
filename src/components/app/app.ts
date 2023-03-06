@@ -168,16 +168,22 @@ export class App {
             this.pagination.currentPage,
             (id: number) => this.onRemoveButtonClick(id),
             (car: CarType) => this.onSelectButtonClick(car),
-            (id: number) => this.switchOnEngine(id)
+            (id: number) => this.switchOnEngine(id),
+            (id: number) => this.switchOffEngine(id)
         ).draw();
         mainContent.appendChild(contentWrapper);
         this.updateInfo();
     }
 
-    private async switchOnEngine(id: number): Promise<void> {
+    private switchOnEngine(id: number): void {
         const car: HTMLElement = document.getElementById(String(id))!;
         const width: number = car.parentElement!.offsetWidth - 90;
         this.setAnimationParametrs(car, width, id);
+    }
+
+    private switchOffEngine(id: number): void {
+        const car: HTMLElement = document.getElementById(String(id))!;
+        car.style.animation = 'none';
     }
 
     private createRaceButtons(): Element {
@@ -201,6 +207,13 @@ export class App {
         buttonReset.classList.add('button');
         buttonReset.classList.add('button_reset');
         buttonReset.textContent = 'Reset';
+        buttonReset.addEventListener('click', () => {
+            const cars: NodeListOf<HTMLElement> =
+                document.querySelectorAll('.car__image');
+            cars.forEach(async (car) => {
+                car.style.animation = 'none';
+            });
+        });
 
         const buttonGenerate: Element = document.createElement('div');
         buttonGenerate.classList.add('button');

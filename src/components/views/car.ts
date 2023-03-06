@@ -2,29 +2,29 @@ import {
     CarType,
     OnRemoveButtonClick,
     OnSelectButtonClick,
-    OnStartEngine,
+    OnChangeEngine,
 } from '../types';
 
 export class Car {
     private readonly parentElement: Element;
     private readonly carData: CarType;
-    private readonly onStartEngine: OnStartEngine;
-    private readonly onClickStop: OnStartEngine;
+    private readonly switchOnEngine: OnChangeEngine;
+    private readonly switchOffEngine: OnChangeEngine;
     private readonly onRemoveButtonClick: OnRemoveButtonClick;
     private readonly onSelectButtonClick: OnSelectButtonClick;
 
     constructor(
         parentElement: Element,
         carData: CarType,
-        onStartEngine: OnStartEngine,
-        onClickStop: OnStartEngine,
+        switchOnEngine: OnChangeEngine,
+        switchOffEngine: OnChangeEngine,
         onRemoveButtonClick: OnRemoveButtonClick,
         onSelectButtonClick: OnSelectButtonClick
     ) {
         this.parentElement = parentElement;
         this.carData = carData;
-        this.onStartEngine = onStartEngine;
-        this.onClickStop = onClickStop;
+        this.switchOnEngine = switchOnEngine;
+        this.switchOffEngine = switchOffEngine;
         this.onRemoveButtonClick = onRemoveButtonClick;
         this.onSelectButtonClick = onSelectButtonClick;
     }
@@ -73,19 +73,30 @@ export class Car {
     }
 
     private createButtonsChangeStateCar(): Element {
-        const startMove = document.createElement('div');
+        const startMove = document.createElement('button');
         startMove.classList.add('start');
         startMove.classList.add('button');
         startMove.classList.add('button_light');
         startMove.textContent = 'on';
-        startMove.addEventListener('click', this.onStartEngine.bind(this, this.carData.id));
 
-        const stopMove = document.createElement('div');
+
+        const stopMove = document.createElement('button');
         stopMove.classList.add('stop');
         stopMove.classList.add('button');
         stopMove.classList.add('button_light');
+        stopMove.disabled = true;
         stopMove.textContent = 'off';
-        stopMove.addEventListener('click', this.onClickStop.bind(this, this.carData.id));
+
+        startMove.addEventListener('click', () => {
+            this.switchOnEngine(this.carData.id);
+            stopMove.disabled = false;
+            startMove.disabled = true;
+        });
+        stopMove.addEventListener('click', () => {
+            stopMove.disabled = true;
+            startMove.disabled = false;
+            this.switchOffEngine(this.carData.id)
+        });
 
         const wrapperMove = document.createElement('div');
         wrapperMove.classList.add('car__move');

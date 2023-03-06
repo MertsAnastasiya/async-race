@@ -24,6 +24,6 @@ export type OnRemoveButtonClick = (id: number) => void;
 
 export type OnSelectButtonClick = (car: CarType) => void;
 
-export type OnStartEngine = (id: number) => void;
+export type OnChangeEngine = (id: number) => void;
 
 export type OnSwitchPage = (currentPage: number) => void;
