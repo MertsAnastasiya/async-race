@@ -26,8 +26,8 @@
     display: block;
     width: 15rem;
     height: 5rem;
-    // background: url('../assets/img/car.svg') no-repeat;
-    // background-size: contain;
+    -webkit-mask: url('../assets/img/car.svg') no-repeat center;
+    mask: url('../assets/img/car.svg') no-repeat center;
 }
 
 .car__move {
@@ -42,5 +42,6 @@
 }
 
 .car__name {
+    @include font($size: 2.1rem, $weight: 600);
     padding: 1rem 0;
 }

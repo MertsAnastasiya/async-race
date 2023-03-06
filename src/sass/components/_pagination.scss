@@ -1,0 +1,14 @@
+.pagination__container {
+    @include font($size: 2rem, $weight: 600);
+    display: flex;
+    justify-content: center;
+    padding-top: 2rem;
+}
+
+.pagination__button {
+    cursor: pointer;
+
+    &_inactive {
+        visibility: hidden;
+    }
+}
