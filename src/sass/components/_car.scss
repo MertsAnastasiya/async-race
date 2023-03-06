@@ -42,5 +42,6 @@
 }
 
 .car__name {
+    @include font($size: 2.1rem, $weight: 600);
     padding: 1rem 0;
 }

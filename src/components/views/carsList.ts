@@ -8,39 +8,40 @@ import {
 } from '../types';
 
 export class CarsList {
-    private onRemoveButtonClick: OnRemoveButtonClick;
-    private onSelectButtonClick: OnSelectButtonClick;
-    private onStartEngine: OnStartEngine;
-    private loader: Loader = new Loader();
+    private readonly parent: Element;
+    private readonly currentPage: number;
+    private readonly onRemoveButtonClick: OnRemoveButtonClick;
+    private readonly onSelectButtonClick: OnSelectButtonClick;
+    private readonly onStartEngine: OnStartEngine;
+    private readonly loader: Loader = new Loader();
 
     constructor(
+        parent: Element,
+        currentPage: number,
         onRemoveButtonClick: OnRemoveButtonClick,
         onSelectButtonClick: OnSelectButtonClick,
         onStartEngine: OnStartEngine
     ) {
+        this.parent = parent;
+        this.currentPage = currentPage;
         this.onRemoveButtonClick = onRemoveButtonClick;
         this.onSelectButtonClick = onSelectButtonClick;
         this.onStartEngine = onStartEngine;
     }
 
-    public async draw(parentElement: Element): Promise<void> {
-        const carsData: CarType[] = await this.loader.getData<CarType[]>('/garage');
-        this.updtateHeader(carsData.length);
+    public async draw(): Promise<void> {
+        const carsData: CarType[] = await this.loader.getData<CarType[]>(
+            `/garage?_page=${this.currentPage}`
+        );
         carsData.forEach((carData) => {
-            const car: Car = new Car(
-                parentElement,
+            new Car(
+                this.parent,
                 carData,
                 (id: number) => this.onStartEngine(id),
                 (id: number) => this.onStartEngine(id),
                 (id: number) => this.onRemoveButtonClick(id),
                 (car: CarType) => this.onSelectButtonClick(car)
-            );
-            car.draw();
+            ).draw();
         });
-    }
-
-    private updtateHeader(amount: number): void {
-        const header: Element = document.querySelector('.h1')!;
-        header.textContent = `Garage (${amount})`;
     }
 }

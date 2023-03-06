@@ -1,4 +1,4 @@
-import { CarType } from '../types';
+import { CarType, Winner } from '../types';
 
 export class Loader {
     private baseLink: string = 'http://127.0.0.1:3000';
@@ -41,6 +41,16 @@ export class Loader {
                 throw new Error(response.statusText);
             }
             return response.json();
+        });
+    }
+
+    public async createWinner(winner: Winner) {
+        await fetch(`${this.baseLink}/winners`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(winner),
         });
     }
 }

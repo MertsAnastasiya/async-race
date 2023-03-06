@@ -6,12 +6,12 @@ import {
 } from '../types';
 
 export class Car {
-    private parentElement: Element;
-    private carData: CarType;
-    private onStartEngine: OnStartEngine;
-    private onClickStop: OnStartEngine;
-    private onRemoveButtonClick: OnRemoveButtonClick;
-    private onSelectButtonClick: OnSelectButtonClick;
+    private readonly parentElement: Element;
+    private readonly carData: CarType;
+    private readonly onStartEngine: OnStartEngine;
+    private readonly onClickStop: OnStartEngine;
+    private readonly onRemoveButtonClick: OnRemoveButtonClick;
+    private readonly onSelectButtonClick: OnSelectButtonClick;
 
     constructor(
         parentElement: Element,
@@ -29,33 +29,9 @@ export class Car {
         this.onSelectButtonClick = onSelectButtonClick;
     }
 
-    public draw() {
-        const wrapperCar: Element = document.createElement('div');
-        wrapperCar.classList.add('car__wrapper');
-
-        const buttonsCar: Element = document.createElement('div');
-        buttonsCar.classList.add('car__buttons');
-
-        const buttonSelect: Element = document.createElement('div');
-        buttonSelect.textContent = 'Select';
-        buttonSelect.classList.add('button');
-        buttonSelect.classList.add('button_select');
-        buttonSelect.addEventListener('click', () => {
-            this.onSelectButtonClick(this.carData);
-            console.log('click select');
-        });
-
-        const buttonRemove: Element = document.createElement('div');
-        buttonRemove.textContent = 'Remove';
-        buttonRemove.classList.add('button');
-        buttonRemove.classList.add('button_remove');
-        buttonRemove.addEventListener('click', () => {
-            this.onRemoveButtonClick(this.carData.id);
-            console.log('click remove');
-        });
-
-        buttonsCar.appendChild(buttonSelect);
-        buttonsCar.appendChild(buttonRemove);
+    public draw(): void {
+        const wrapper: Element = document.createElement('div');
+        wrapper.classList.add('car__wrapper');
 
         const name: Element = document.createElement('div');
         name.classList.add('car__name');
@@ -66,6 +42,37 @@ export class Car {
         imgCar.setAttribute('id', `${this.carData.id}`);
         imgCar.style.backgroundColor = this.carData.color;
 
+        wrapper.appendChild(this.createButtonsChangeCar());
+        wrapper.appendChild(this.createButtonsChangeStateCar());
+        wrapper.appendChild(name);
+        wrapper.appendChild(imgCar);
+
+        this.parentElement.appendChild(wrapper);
+    }
+
+    private createButtonsChangeCar(): Element {
+        const buttonsCar: Element = document.createElement('div');
+        buttonsCar.classList.add('car__buttons');
+
+        const buttonSelect: Element = document.createElement('div');
+        buttonSelect.textContent = 'Select';
+        buttonSelect.classList.add('button');
+        buttonSelect.classList.add('button_select');
+        buttonSelect.addEventListener('click', this.onSelectButtonClick.bind(this, this.carData));
+
+        const buttonRemove: Element = document.createElement('div');
+        buttonRemove.textContent = 'Remove';
+        buttonRemove.classList.add('button');
+        buttonRemove.classList.add('button_remove');
+        buttonRemove.addEventListener('click', this.onRemoveButtonClick.bind(this, this.carData.id));
+
+        buttonsCar.appendChild(buttonSelect);
+        buttonsCar.appendChild(buttonRemove);
+
+        return buttonsCar;
+    }
+
+    private createButtonsChangeStateCar(): Element {
         const startMove = document.createElement('div');
         startMove.classList.add('start');
         startMove.classList.add('button');
@@ -85,11 +92,6 @@ export class Car {
         wrapperMove.appendChild(startMove);
         wrapperMove.appendChild(stopMove);
 
-        wrapperCar.appendChild(buttonsCar);
-        wrapperCar.appendChild(wrapperMove);
-        wrapperCar.appendChild(name);
-        wrapperCar.appendChild(imgCar);
-
-        this.parentElement.appendChild(wrapperCar);
+        return wrapperMove;
     }
 }

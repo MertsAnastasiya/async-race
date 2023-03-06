@@ -13,7 +13,7 @@ export class Winners {
     public draw(): void {
         const header: Element = document.createElement('h1');
         header.classList.add('h1');
-        header.textContent = `Winners(1)`;
+        header.textContent = `Winners( )`;
         this.parentElement.appendChild(header);
         this.getWinners();
     }
@@ -33,19 +33,19 @@ export class Winners {
         const table: Element = document.createElement('table');
         table.classList.add('table');
 
-        const trHeader = document.createElement('tr');
+        const trHeader: Element = document.createElement('tr');
         trHeader.classList.add('tr_header');
 
-        const thNumber = document.createElement('th');
-        thNumber.innerText = 'Number';
-        const thCar = document.createElement('th');
-        thCar.innerText = 'Car';
-        const thName = document.createElement('th');
-        thName.innerText = 'Name';
-        const thWins = document.createElement('th');
-        thWins.innerText = 'Wins';
-        const thTime = document.createElement('th');
-        thTime.innerText = 'Best time';
+        const thNumber: Element = document.createElement('th');
+        thNumber.textContent = 'Number';
+        const thCar: Element = document.createElement('th');
+        thCar.textContent = 'Car';
+        const thName: Element = document.createElement('th');
+        thName.textContent = 'Name';
+        const thWins: Element = document.createElement('th');
+        thWins.textContent = 'Wins';
+        const thTime: Element = document.createElement('th');
+        thTime.textContent = 'Best time';
         trHeader.appendChild(thNumber);
         trHeader.appendChild(thCar);
         trHeader.appendChild(thName);
@@ -60,19 +60,19 @@ export class Winners {
     private async createTableLine(table: Element, winnerData: Winner): Promise<void> {
         const tr: Element = document.createElement('tr');
 
-        const tdId: HTMLTableCellElement = document.createElement('td');
-        tdId.innerText = String(++this.place);
-        const tdCar: HTMLTableCellElement = document.createElement('td');
+        const tdId: Element = document.createElement('td');
+        tdId.textContent = String(++this.place);
+        const tdCar: HTMLElement = document.createElement('td');
         tdCar.classList.add('td_image');
-        const tdName: HTMLTableCellElement = document.createElement('td');
+        const tdName: Element = document.createElement('td');
         const carData: CarType = await this.loader.getData<CarType>(`/garage/${winnerData.id}`);
         tdCar.style.backgroundColor = carData.color;
-        tdName.innerText = carData.name;
+        tdName.textContent = carData.name;
 
-        const tdWins: HTMLTableCellElement = document.createElement('td');
-        tdWins.innerText = String(winnerData.wins);
-        const tdTime: HTMLTableCellElement = document.createElement('td');
-        tdTime.innerText = String(winnerData.time);
+        const tdWins: HTMLElement = document.createElement('td');
+        tdWins.textContent = String(winnerData.wins);
+        const tdTime: HTMLElement = document.createElement('td');
+        tdTime.textContent = String(winnerData.time);
 
         tr.appendChild(tdId);
         tr.appendChild(tdCar);
