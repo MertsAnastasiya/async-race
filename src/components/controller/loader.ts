@@ -1,4 +1,4 @@
-import { CarType, Winner } from '../types';
+import { NewCarType, Winner } from '../types';
 
 export class Loader {
     private baseLink: string = 'http://127.0.0.1:3000';
@@ -8,7 +8,7 @@ export class Loader {
         return data;
     }
 
-    public async createCar(car: {name: string, color: string}) {
+    public async createCar(car: NewCarType) {
         await fetch(`${this.baseLink}/garage`, {
             method: 'POST',
             headers: {
@@ -18,7 +18,7 @@ export class Loader {
         });
     }
 
-    public async updateCar(car: {name: string, color: string}, id: number) {
+    public async updateCar(car: NewCarType, id: number) {
         await fetch(`${this.baseLink}/garage/${id}`, {
             method: 'PUT',
             headers: {
@@ -36,15 +36,15 @@ export class Loader {
 
     public async getEngineData<T>(id: number): Promise<T> {
         return fetch(`${this.baseLink}/engine/?id=${id}&status=started`, { method: 'PATCH' })
-        .then((response: Response) => {
-            if(!response.ok) {
-                throw new Error(response.statusText);
-            }
-            return response.json();
-        });
+            .then((response: Response) => {
+                if(!response.ok) {
+                    throw new Error(response.statusText);
+                }
+                return response.json();
+            });
     }
 
-    public async createWinner(winner: Winner) {
+    public async createWinner(winner: Winner): Promise<void> {
         await fetch(`${this.baseLink}/winners`, {
             method: 'POST',
             headers: {

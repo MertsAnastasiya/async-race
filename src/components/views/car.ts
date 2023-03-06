@@ -58,13 +58,19 @@ export class Car {
         buttonSelect.textContent = 'Select';
         buttonSelect.classList.add('button');
         buttonSelect.classList.add('button_select');
-        buttonSelect.addEventListener('click', this.onSelectButtonClick.bind(this, this.carData));
+        buttonSelect.addEventListener(
+            'click',
+            this.onSelectButtonClick.bind(this, this.carData)
+        );
 
         const buttonRemove: Element = document.createElement('div');
         buttonRemove.textContent = 'Remove';
         buttonRemove.classList.add('button');
         buttonRemove.classList.add('button_remove');
-        buttonRemove.addEventListener('click', this.onRemoveButtonClick.bind(this, this.carData.id));
+        buttonRemove.addEventListener(
+            'click',
+            this.onRemoveButtonClick.bind(this, this.carData.id)
+        );
 
         buttonsCar.appendChild(buttonSelect);
         buttonsCar.appendChild(buttonRemove);
@@ -78,7 +84,6 @@ export class Car {
         startMove.classList.add('button');
         startMove.classList.add('button_light');
         startMove.textContent = 'on';
-
 
         const stopMove = document.createElement('button');
         stopMove.classList.add('stop');
@@ -95,7 +100,7 @@ export class Car {
         stopMove.addEventListener('click', () => {
             stopMove.disabled = true;
             startMove.disabled = false;
-            this.switchOffEngine(this.carData.id)
+            this.switchOffEngine(this.carData.id);
         });
 
         const wrapperMove = document.createElement('div');

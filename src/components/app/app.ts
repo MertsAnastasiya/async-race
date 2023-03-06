@@ -1,6 +1,6 @@
 import { Loader } from '../controller/loader';
 import { CarsList } from '../views/carsList';
-import { CarType, Engine, NewCarType, Winner } from '../types';
+import { CarType, Engine, NewCarType } from '../types';
 import { Winners } from '../views/winners';
 import { Pagination } from '../views/pagination';
 import { brands, models } from '../data';
