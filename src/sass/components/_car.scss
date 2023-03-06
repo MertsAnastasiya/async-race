@@ -1,0 +1,47 @@
+.car__wrapper {
+    padding: 1rem;
+    border-bottom: 1px dashed $color-text;
+    position: relative;
+
+    &::after {
+        content: ' ';
+        background-image: url('../assets/img/finish.svg');
+        background-position: center;
+        background-size: cover;
+        width: 5rem;
+        height: 5rem;
+        position: absolute;
+        right: 5rem;
+        bottom : 0;
+    }
+}
+
+.car__buttons {
+    display: flex;
+    gap: 1rem;
+    padding-top: 1rem;
+}
+
+.car__image {
+    display: block;
+    width: 15rem;
+    height: 5rem;
+    -webkit-mask: url('../assets/img/car.svg') no-repeat center;
+    mask: url('../assets/img/car.svg') no-repeat center;
+}
+
+.car__move {
+    display: flex;
+    gap: 1rem;
+    padding: 1rem 0;
+}
+
+.move {
+    background-color: $color-text;
+    color: $color-add;
+}
+
+.car__name {
+    @include font($size: 2.1rem, $weight: 600);
+    padding: 1rem 0;
+}
