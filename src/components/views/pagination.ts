@@ -3,13 +3,12 @@ import { OnSwitchPage } from '../types';
 export class Pagination {
     public limit: number = 10;
     public currentPage: number = 1;
-    public maxPage: number = 0;
-    private readonly parent: Element;
+    public maxPage: number;
     private readonly onSwitchPage: OnSwitchPage;
 
-    constructor(parent: Element, onSwitchPage: OnSwitchPage) {
-        this.parent = parent;
+    constructor(onSwitchPage: OnSwitchPage) {
         this.onSwitchPage = onSwitchPage;
+        this.maxPage = this.currentPage;
     }
 
     public draw(): void {
@@ -38,7 +37,7 @@ export class Pagination {
         wrapper.append(currentPage);
         wrapper.append(buttonNext);
 
-        this.parent.append(wrapper);
+        document.querySelector('.content')!.append(wrapper);
     }
 
     private showPrevPage(): void {
@@ -64,20 +63,33 @@ export class Pagination {
         const buttonNext: HTMLElement =
             document.querySelector<HTMLElement>('.button_next')!;
 
-        if (this.currentPage !== 1 && this.currentPage === 2) {
-            const buttonPrev: HTMLElement =
-                document.querySelector<HTMLElement>('.button_prev')!;
-            buttonPrev.classList.remove('pagination__button_inactive');
-        }
         if (this.currentPage === 1) {
             buttonPrev.classList.add('pagination__button_inactive');
         }
+        if (this.currentPage === 2) {
+            buttonPrev.classList.remove('pagination__button_inactive');
+        }
+        //         if (this.currentPage > 1) {
+        //             buttonPrev.classList.remove('pagination__button_inactive');
+        //         }
+        //         console.log(this.maxPage);
+        //
         if (this.currentPage === this.maxPage) {
             buttonNext.classList.add('pagination__button_inactive');
         }
-        if (this.currentPage === this.maxPage - 1) {
-            buttonNext.classList.remove('pagination__button_inactive');
-        }
+        //         if (this.currentPage < this.maxPage) {
+        //             buttonNext.classList.remove('pagination__button_inactive');
+        //         }
+
+        // if (this.currentPage !== this.maxPage) {
+        //     buttonNext.classList.remove('pagination__button_inactive');
+        // }
+        // if (this.currentPage !== 1 && this.currentPage === 2) {
+        //     buttonPrev.classList.remove('pagination__button_inactive');
+        // }
+        // if (this.currentPage === this.maxPage - 1) {
+        //     buttonNext.classList.remove('pagination__button_inactive');
+        // }
         const pageNumber: HTMLElement =
             document.querySelector<HTMLElement>('.pagination__page')!;
         pageNumber.textContent = `${this.currentPage}`;

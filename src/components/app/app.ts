@@ -5,39 +5,53 @@ import { Winners } from '../views/winners';
 import { Pagination } from '../views/pagination';
 import { brands, models } from '../data';
 
-const navigation: Element = document.querySelector('.navigation')!;
-const mainContent: Element = document.querySelector('.content')!;
-const contentWrapper: Element = document.createElement('div');
-
 export class App {
     private readonly loader: Loader = new Loader();
-    private readonly pagination: Pagination = new Pagination(mainContent, this.updateGarageContent.bind(this));
+    private readonly pagination: Pagination = new Pagination(this.updateGarageContent.bind(this));
     private readonly generateAmount: number = 100;
     private readonly distance: number = 500;
 
     public start(): void {
+        this.createMainLayout();
         this.generateNavigation();
         this.showGaragePage();
     }
 
+    private createMainLayout(): void {
+        const main: Element = document.createElement('main');
+        main.classList.add('main');
+        const container: Element = document.createElement('div');
+        container.classList.add('container');
+        container.classList.add('main__container');
+        const navigation: Element = document.createElement('section');
+        navigation.classList.add('navigation');
+        const control: Element = document.createElement('section');
+        control.classList.add('control');
+        const content: Element = document.createElement('section');
+        content.classList.add('content');
+
+        container.append(navigation);
+        container.append(control);
+        container.append(content);
+        main.append(container);
+
+        document.body.append(main);
+    }
+
     public showGaragePage(): void {
-        mainContent.innerHTML = '';
-        mainContent.appendChild(this.generateHeader());
+        const control = document.querySelector('.control')!;
+        control.appendChild(this.generateHeader());
         this.pagination.draw();
-        mainContent.appendChild(this.createForms());
+        control.appendChild(this.createForms());
         this.updateGarageContent();
     }
 
     public generateHeader(): Element {
-        const wrapper: Element = document.createElement('div');
-
         const header: Element = document.createElement('h1');
         header.classList.add('h1');
         header.textContent = `Garage( )`;
 
-        wrapper.append(header);
-
-        return wrapper;
+        return header;
     }
 
     private generateNavigation(): void {
@@ -60,10 +74,13 @@ export class App {
 
         buttonsWrapper.appendChild(buttonToGarage);
         buttonsWrapper.appendChild(buttonToWinners);
+
+        const navigation: Element = document.querySelector('.navigation')!;
         navigation.appendChild(buttonsWrapper);
     }
 
     private showWinersPage(): void {
+        const mainContent = document.querySelector('.content')!;
         mainContent.innerHTML = '';
         new Winners(mainContent).draw();
     }
@@ -162,17 +179,19 @@ export class App {
     }
 
     private updateGarageContent(): void {
-        contentWrapper.innerHTML = '';
+        const content = document.querySelector('.content')!;
+        content.innerHTML = '';
         new CarsList(
-            contentWrapper,
+            content,
             this.pagination.currentPage,
             (id: number) => this.onRemoveButtonClick(id),
             (car: CarType) => this.onSelectButtonClick(car),
             (id: number) => this.switchOnEngine(id),
             (id: number) => this.switchOffEngine(id)
         ).draw();
-        mainContent.appendChild(contentWrapper);
+
         this.updateInfo();
+        this.pagination.updatePaginationView();
     }
 
     private switchOnEngine(id: number): void {
@@ -282,6 +301,5 @@ export class App {
         const carsData: CarType[] = await this.loader.getData<CarType[]>(`/garage`);
         this.updateHeader(carsData.length);
         this.pagination.setMaxPage(Math.ceil(carsData.length / this.pagination.limit));
-        this.pagination.updatePaginationView();
     }
 }
